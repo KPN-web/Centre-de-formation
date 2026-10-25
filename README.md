@@ -1,10 +1,10 @@
-# Centre de formation
+ Centre de formation
 
 Ce projet est une application de bureau qui permet de gérer un centre de formation de A à Z. L'idée de départ : remplacer les fichiers Excel et les papiers par un outil unique, où tout est centralisé au même endroit.
 
 Il a été réalisé dans le cadre d'un projet scolaire à l'ESTA (filière SIR, L2, 2025-2026), avec JavaFX pour l'interface et MySQL pour la base de données.
 
-## Ce que l'application permet de faire
+ Ce que l'application permet de faire
 
 - Créer des programmes de formation et organiser leurs modules
 - Planifier des sessions : dates, lieu, nombre de places, formateur responsable
@@ -14,20 +14,20 @@ Il a été réalisé dans le cadre d'un projet scolaire à l'ESTA (filière SIR,
 - Générer des certificats, attestations et relevés de notes
 - Consulter des statistiques : chiffre d'affaires, taux de réussite, remplissage des sessions...
 
-## Organisation du code
+ Organisation du code
 
 - `Controller/` : la logique derrière chaque écran
 - `Database/` : la connexion à la base de données et l'accès aux données
 - `FX/` : les interfaces JavaFX
 - `metier/` : les classes qui représentent les éléments du centre (formations, sessions, apprenants...)
 
-## Pour l'essayer chez soi
+ Pour l'essayer chez soi
 
 1. Récupérer le projet :
 2. L'ouvrir dans un IDE comme IntelliJ, Eclipse ou NetBeans.
-3. Créer la base de données MySQL, puis vérifier les paramètres de connexion dans `Database/DatabaseConnection.java`.
+3. Importer la base de données avec `mysql -u root < schema.sql` (ou via phpMyAdmin, onglet Importer), puis vérifier les paramètres dans `Database/DatabaseConnection.java`. Compte de test : admin@example.com / admin123
 4. Lancer l'application.
 
-## Remarque
+ Remarque
 
 C'est un projet d'apprentissage, encore en cours d'amélioration. Les suggestions sont les bienvenues.

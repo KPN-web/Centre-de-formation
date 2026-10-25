@@ -24,3 +24,10 @@ Il a été réalisé dans le cadre d'un projet scolaire à l'ESTA (filière SIR,
 ## Pour l'essayer chez soi
 
 1. Récupérer le projet :
+2. L'ouvrir dans un IDE comme IntelliJ, Eclipse ou NetBeans.
+3. Créer la base de données MySQL, puis vérifier les paramètres de connexion dans `Database/DatabaseConnection.java`.
+4. Lancer l'application.
+
+## Remarque
+
+C'est un projet d'apprentissage, encore en cours d'amélioration. Les suggestions sont les bienvenues.

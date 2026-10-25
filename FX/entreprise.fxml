@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Interface Entreprise – Gestion complète avec contrôle d'accès par rôle -->
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.EntrepriseController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <!-- Titre + filtre + bouton actualiser -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label fx:id="lblTitrePage" text="🏢 Espace Entreprise" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <!-- Filtre entreprise : visible ADMIN/RESPONSABLE/SERVICE_FINANCIER -->
+        <Label fx:id="lblFiltreLabel" text="Filtrer par entreprise :"/>
+        <ComboBox fx:id="cbFiltreEntreprise" prefWidth="220" promptText="— Toutes —"/>
+        <Button text="🔄 Actualiser" onAction="#handleActualiser" styleClass="btn-primary"/>
+    </HBox>
+
+    <!-- KPI Cards (visibles selon rôle) -->
+    <GridPane fx:id="gridKPI" hgap="15" vgap="15">
+        <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label text="🎓 Apprenants" styleClass="stat-label"/>
+            <Label fx:id="lblNbApprenants" text="–" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Label text="📅 Sessions actives" styleClass="stat-label"/>
+            <Label fx:id="lblNbSessions" text="–" styleClass="stat-value"/>
+        </VBox>
+        <!-- Infos financières : masquées pour ENTREPRISE (chaque entreprise voit sa situation dans Finance) -->
+        <VBox fx:id="cardTotalFacture" styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <Label text="💰 Total Facturé" styleClass="stat-label"/>
+            <Label fx:id="lblTotalFacture" text="–" styleClass="stat-value"/>
+        </VBox>
+        <VBox fx:id="cardTotalPaye" styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label text="✅ Total Payé" styleClass="stat-label"/>
+            <Label fx:id="lblTotalPaye" text="–" styleClass="stat-value" style="-fx-text-fill:#27ae60;"/>
+        </VBox>
+        <VBox fx:id="cardResteAPayer" styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label text="⏳ Reste à Régler" styleClass="stat-label"/>
+            <Label fx:id="lblResteAPayer" text="–" styleClass="stat-value" style="-fx-text-fill:#e74c3c;"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label text="😊 Satisfaction" styleClass="stat-label"/>
+            <Label fx:id="lblSatisfaction" text="–" styleClass="stat-value"/>
+        </VBox>
+    </GridPane>
+
+    <!-- Onglets -->
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- ── Accueil / Tableau de bord ───────────────────────── -->
+        <Tab fx:id="tabAccueil" text="🏠 Accueil">
+            <ScrollPane fitToWidth="true" fitToHeight="true">
+                <VBox fx:id="vboxAccueil" spacing="20" alignment="TOP_CENTER">
+                    <padding><Insets top="30" bottom="30" left="40" right="40"/></padding>
+
+                    <!-- Bannière de bienvenue -->
+                    <VBox alignment="CENTER" spacing="8" styleClass="stat-card"
+                          style="-fx-background-color:#1a3c5e;-fx-padding:30;-fx-background-radius:12;">
+                        <Label fx:id="lblAccueilTitre" text="Bienvenue"
+                               style="-fx-font-size:26px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                        <Label fx:id="lblAccueilSousTitre" text="Espace entreprise"
+                               style="-fx-font-size:14px;-fx-text-fill:#aecce4;"/>
+                    </VBox>
+
+                    <!-- Cartes KPI résumé -->
+                    <HBox spacing="20" alignment="CENTER">
+                        <VBox styleClass="stat-card" alignment="CENTER" prefWidth="160" spacing="6"
+                              style="-fx-border-color:#3498db;-fx-border-width:2;-fx-border-radius:8;-fx-background-radius:8;">
+                            <Label text="🎓" style="-fx-font-size:28px;"/>
+                            <Label fx:id="lblKpiApprenants" text="–" styleClass="stat-value"/>
+                            <Label text="Apprenants" styleClass="stat-label"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" prefWidth="160" spacing="6"
+                              style="-fx-border-color:#27ae60;-fx-border-width:2;-fx-border-radius:8;-fx-background-radius:8;">
+                            <Label text="✅" style="-fx-font-size:28px;"/>
+                            <Label fx:id="lblKpiPaye" text="–" styleClass="stat-value" style="-fx-text-fill:#27ae60;"/>
+                            <Label text="Total Payé" styleClass="stat-label"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" prefWidth="160" spacing="6"
+                              style="-fx-border-color:#e74c3c;-fx-border-width:2;-fx-border-radius:8;-fx-background-radius:8;">
+                            <Label text="⏳" style="-fx-font-size:28px;"/>
+                            <Label fx:id="lblKpiReste" text="–" styleClass="stat-value" style="-fx-text-fill:#e74c3c;"/>
+                            <Label text="Reste à Régler" styleClass="stat-label"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" prefWidth="160" spacing="6"
+                              style="-fx-border-color:#e67e22;-fx-border-width:2;-fx-border-radius:8;-fx-background-radius:8;">
+                            <Label text="📅" style="-fx-font-size:28px;"/>
+                            <Label fx:id="lblKpiSessions" text="–" styleClass="stat-value" style="-fx-text-fill:#e67e22;"/>
+                            <Label text="Sessions actives" styleClass="stat-label"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Raccourcis vers les onglets -->
+                    <VBox spacing="10" styleClass="stat-card" style="-fx-padding:20;-fx-background-radius:8;">
+                        <Label text="Accès rapide" style="-fx-font-size:15px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;"/>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <Button fx:id="btnGoApprenants" text="🎓 Mes Apprenants"   onAction="#handleGoApprenants"  styleClass="btn-primary"  prefWidth="200"/>
+                            <Button fx:id="btnGoFormations" text="📚 Formations"        onAction="#handleGoFormations"  styleClass="btn-secondary" prefWidth="200"/>
+                            <Button fx:id="btnGoPaiements" text="💰 Historique Paiements" onAction="#handleGoPaiements" styleClass="btn-info"    prefWidth="200"/>
+                            <Button fx:id="btnGoFinance"   text="💳 Finance"            onAction="#handleGoFinance"    styleClass="btn-danger"   prefWidth="200"/>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- ── Apprenants ──────────────────────────────────────── -->
+        <Tab text="🎓 Mes Apprenants">
+            <TableView fx:id="tableApprenants" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colNom"          text="Nom"          prefWidth="150"/>
+                    <TableColumn fx:id="colPrenom"       text="Prénom"       prefWidth="130"/>
+                    <TableColumn fx:id="colSession"      text="Formation"    prefWidth="220"/>
+                    <TableColumn fx:id="colStatut"       text="Statut"       prefWidth="110"/>
+                    <TableColumn fx:id="colResultat"     text="Résultat"     prefWidth="100"/>
+                    <TableColumn fx:id="colMontantPaye"  text="Payé (FCFA)"  prefWidth="120"/>
+                    <TableColumn fx:id="colResteAPayer"  text="Reste (FCFA)" prefWidth="120"/>
+                </columns>
+                <placeholder><Label text="Aucun apprenant trouvé"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- ── Formations disponibles ────────────────────────── -->
+        <Tab text="📚 Formations Disponibles">
+            <TableView fx:id="tableProgrammes" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colPIntitule" text="Formation"    prefWidth="250"/>
+                    <TableColumn fx:id="colPDuree"    text="Durée (h)"   prefWidth="100"/>
+                    <TableColumn fx:id="colPTarif"    text="Tarif (FCFA)" prefWidth="130"/>
+                    <TableColumn fx:id="colPNiveau"   text="Niveau"      prefWidth="120"/>
+                </columns>
+                <placeholder><Label text="Aucune formation"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- ── Paiements ─────────────────────────────────────── -->
+        <Tab text="💰 Historique Paiements">
+            <TableView fx:id="tablePaiements" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colPApprenant" text="Apprenant"  prefWidth="160"/>
+                    <TableColumn fx:id="colPMontant"   text="Montant"    prefWidth="130"/>
+                    <TableColumn fx:id="colPDate"      text="Date"       prefWidth="110"/>
+                    <TableColumn fx:id="colPMode"      text="Mode"       prefWidth="120"/>
+                    <TableColumn fx:id="colPStatut"    text="Statut"     prefWidth="110"/>
+                </columns>
+                <placeholder><Label text="Aucun paiement"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- ── Finance ──────────────────────────────────────────
+             Visible pour : ENTREPRISE (sa propre situation),
+                            SERVICE_FINANCIER / ADMIN / RESPONSABLE (toutes les entreprises)
+        ─────────────────────────────────────────────────────── -->
+        <Tab text="💳 Finance">
+            <VBox spacing="10">
+                <padding><Insets top="10" bottom="5" left="5" right="5"/></padding>
+
+                <!-- Résumé financier de l'entreprise sélectionnée/connectée -->
+                <HBox spacing="20" alignment="CENTER_LEFT">
+                    <VBox styleClass="stat-card" prefWidth="200">
+                        <Label text="📋 Total à facturer" styleClass="stat-label"/>
+                        <Label fx:id="lblFinTotalFacture" text="–" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" prefWidth="200">
+                        <Label text="✅ Déjà réglé" styleClass="stat-label"/>
+                        <Label fx:id="lblFinTotalPaye" text="–" styleClass="stat-value" style="-fx-text-fill:#27ae60;"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" prefWidth="200">
+                        <Label text="⏳ Reste à payer" styleClass="stat-label"/>
+                        <Label fx:id="lblFinResteAPayer" text="–" styleClass="stat-value" style="-fx-text-fill:#e74c3c;"/>
+                    </VBox>
+                </HBox>
+
+                <Label fx:id="lblTotalFinance" text="Détail par apprenant :"
+                       style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+
+                <TableView fx:id="tableFinance" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colFNom"           text="Nom"              prefWidth="140"/>
+                        <TableColumn fx:id="colFPrenom"        text="Prénom"           prefWidth="120"/>
+                        <TableColumn fx:id="colFFormation"     text="Formation"        prefWidth="220"/>
+                        <TableColumn fx:id="colFPrixFormation" text="Prix formation"   prefWidth="140"/>
+                        <TableColumn fx:id="colFPaye"          text="Déjà payé"        prefWidth="130"/>
+                        <TableColumn fx:id="colFReste"         text="Reste à payer"    prefWidth="130"/>
+                    </columns>
+                    <placeholder><Label text="Aucune donnée financière"/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ── Mes Membres (ENTREPRISE uniquement) ───────────────── -->
+        <Tab fx:id="tabMesMembres" text="👥 Mes Membres">
+            <VBox spacing="14">
+                <padding><Insets top="14" bottom="14" left="16" right="16"/></padding>
+
+                <Label text="👥 Gestion de vos membres" styleClass="form-title"
+                       style="-fx-text-fill:#e67e22;"/>
+                <Label text="Ajoutez ou retirez des membres de votre entreprise. Chaque membre pourra être inscrit à des sessions de formation."
+                       style="-fx-text-fill:#7f8c8d; -fx-font-style:italic;" wrapText="true"/>
+
+                <!-- Formulaire ajout membre -->
+                <VBox styleClass="stat-card" spacing="10">
+                    <padding><Insets top="12" bottom="12" left="14" right="14"/></padding>
+                    <Label text="Ajouter un nouveau membre"
+                           style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+                    <GridPane hgap="12" vgap="8">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+                        <Label text="Nom *"     GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="Prénom *"  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="Email *"   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                        <Label text="Téléphone" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                        <TextField fx:id="txtMembreNomE"
+                                   promptText="Nom"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+                        <TextField fx:id="txtMembrePrenomE"
+                                   promptText="Prénom"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+                        <TextField fx:id="txtMembreEmailE"
+                                   promptText="email@exemple.com"
+                                   GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+                        <TextField fx:id="txtMembreTelephoneE"
+                                   promptText="+226 XX XX XX"
+                                   GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity"/>
+                    </GridPane>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="➕ Ajouter ce membre"
+                                onAction="#handleAjouterMembreEntreprise"
+                                style="-fx-background-color:#e67e22; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:7 16 7 16; -fx-background-radius:5;"/>
+                        <Button text="🗑️ Retirer le membre sélectionné"
+                                onAction="#handleRetirerMembreEntreprise"
+                                style="-fx-background-color:#e74c3c; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:7 16 7 16; -fx-background-radius:5;"/>
+                        <Button text="🔄 Actualiser"
+                                onAction="#handleActualiserMembresEntreprise"
+                                style="-fx-background-color:#3498db; -fx-text-fill:white; -fx-padding:7 12 7 12; -fx-background-radius:5;"/>
+                    </HBox>
+                    <Label fx:id="lblMembreStatusE" text="" wrapText="true"/>
+                </VBox>
+
+                <!-- Table membres avec colonne Prix formation -->
+                <Label text="Liste des membres de votre entreprise :"
+                       style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+                <TableView fx:id="tableMembresEntreprise" VBox.vgrow="ALWAYS" prefHeight="300">
+                    <columns>
+                        <TableColumn fx:id="colMENom"          text="Nom"             prefWidth="130"/>
+                        <TableColumn fx:id="colMEPrenom"       text="Prénom"          prefWidth="120"/>
+                        <TableColumn fx:id="colMEEmail"        text="Email"           prefWidth="180"/>
+                        <TableColumn fx:id="colMETelephone"    text="Téléphone"       prefWidth="120"/>
+                        <TableColumn fx:id="colMEMatricule"    text="Matricule"       prefWidth="110"/>
+                        <TableColumn fx:id="colMEPrixFormation" text="💰 Prix formation (FCFA)" prefWidth="180"/>
+                    </columns>
+                    <placeholder><Label text="Aucun membre dans votre entreprise"/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ── Gestion Entreprises (ADMIN/RESPONSABLE uniquement) ──
+             SERVICE_FINANCIER : accès lecture seule (formulaire masqué)
+             ENTREPRISE        : onglet masqué
+        ─────────────────────────────────────────────────────────── -->
+        <Tab fx:id="tabGestionEntreprises" text="🏭 Entreprises Partenaires">
+            <SplitPane dividerPositions="0.60" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tableEntreprises" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colENom"       text="Entreprise"  prefWidth="180"/>
+                        <TableColumn fx:id="colEAdresse"   text="Adresse"     prefWidth="160"/>
+                        <TableColumn fx:id="colETelephone" text="Téléphone"   prefWidth="110"/>
+                        <TableColumn fx:id="colEEmail"     text="Email"       prefWidth="160"/>
+                        <TableColumn fx:id="colEContact"   text="Référent"    prefWidth="140"/>
+                    </columns>
+                    <placeholder><Label text="Aucune entreprise enregistrée"/></placeholder>
+                </TableView>
+
+                <!-- Formulaire ajout/modification : visible ADMIN/RESPONSABLE seulement -->
+                <ScrollPane fitToWidth="true">
+                    <VBox fx:id="vboxFormulaireEntreprise" spacing="10">
+                        <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                        <Label text="Formulaire Entreprise" styleClass="form-title"/>
+                        <Label text="Nom *"/>      <TextField fx:id="txtENom"       promptText="Raison sociale"/>
+                        <Label text="Adresse"/>    <TextField fx:id="txtEAdresse"   promptText="Adresse siège"/>
+                        <Label text="Téléphone"/>  <TextField fx:id="txtETelephone" promptText="+226 XX XX XX XX"/>
+                        <Label text="Email"/>      <TextField fx:id="txtEEmail"     promptText="contact@entreprise.com"/>
+                        <Label text="Référent"/>   <TextField fx:id="txtEContact"   promptText="Nom du contact"/>
+                        <Label fx:id="lblEStatus" text="" wrapText="true"/>
+                        <HBox fx:id="hboxBoutonsEntreprise" spacing="8">
+                            <Button text="➕ Ajouter"    onAction="#handleAjouterEntreprise"   styleClass="btn-primary"/>
+                            <Button text="✏️ Modifier"   onAction="#handleModifierEntreprise"  styleClass="btn-secondary"/>
+                            <Button text="🗑️ Supprimer"  onAction="#handleSupprimerEntreprise" styleClass="btn-danger"/>
+                            <Button text="🔄 Nouveau"    onAction="#handleNouvelleEntreprise"  styleClass="btn-info"/>
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
+            </SplitPane>
+        </Tab>
+
+    </TabPane>
+</VBox>

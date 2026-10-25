@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.ApprenantController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="🎓 Gestion des Apprenants" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="txtRecherche" promptText="🔍 Rechercher..." prefWidth="220"/>
+    </HBox>
+
+    <!-- ═══ PANNEAU ENTREPRISE : ajouter / gérer ses membres ══════════════ -->
+    <VBox fx:id="vboxEntrepriseMembers" spacing="12"
+          style="-fx-border-color:#e67e22; -fx-border-width:1; -fx-border-radius:6; -fx-background-color:#1e1e2e; -fx-background-radius:6;">
+        <padding><Insets top="14" bottom="14" left="16" right="16"/></padding>
+
+        <Label text="🏢 Gestion de vos membres" styleClass="form-title"
+               style="-fx-text-fill:#e67e22;"/>
+        <Label text="Ajoutez ou retirez des membres de votre entreprise. Chaque membre pourra être inscrit à des sessions."
+               style="-fx-text-fill:#7f8c8d; -fx-font-style:italic;" wrapText="true"/>
+
+        <!-- Formulaire ajout membre -->
+        <GridPane hgap="12" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Nom *"     GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="Prénom *"  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Email *"   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <Label text="Téléphone" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+            <TextField fx:id="txtMembreNom"       promptText="Nom"      GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="txtMembrePrenom"     promptText="Prénom"   GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="txtMembreEmail"      promptText="email@ex.com" GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="txtMembreTelephone"  promptText="+226 XX XX XX" GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity"/>
+        </GridPane>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="➕ Ajouter ce membre"
+                    onAction="#handleAjouterMembre"
+                    style="-fx-background-color:#e67e22; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:7 16 7 16; -fx-background-radius:5;"/>
+            <Button text="🗑️ Retirer le membre sélectionné"
+                    onAction="#handleRetirerMembre"
+                    style="-fx-background-color:#e74c3c; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:7 16 7 16; -fx-background-radius:5;"/>
+            <Button text="🔄 Actualiser"
+                    onAction="#handleActualiserMembres"
+                    style="-fx-background-color:#3498db; -fx-text-fill:white; -fx-padding:7 12 7 12; -fx-background-radius:5;"/>
+        </HBox>
+
+        <Label fx:id="lblMembreStatus" text="" wrapText="true"/>
+
+        <!-- Table membres de l'entreprise -->
+        <TableView fx:id="tableMembers" prefHeight="180">
+            <columns>
+                <TableColumn fx:id="colMNom"       text="Nom"        prefWidth="130"/>
+                <TableColumn fx:id="colMPrenom"    text="Prénom"     prefWidth="120"/>
+                <TableColumn fx:id="colMEmail"     text="Email"      prefWidth="170"/>
+                <TableColumn fx:id="colMTelephone" text="Téléphone"  prefWidth="120"/>
+                <TableColumn fx:id="colMMatricule" text="Matricule"  prefWidth="100"/>
+                <TableColumn fx:id="colMPrixFormation" text="💰 Prix formation (FCFA)" prefWidth="175"/>
+            </columns>
+            <placeholder><Label text="Aucun membre dans votre entreprise"/></placeholder>
+        </TableView>
+    </VBox>
+
+    <!-- ═══ TABLE PRINCIPALE + FORMULAIRE ADMIN ═══════════════════════════ -->
+    <SplitPane dividerPositions="0.62" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"            text="ID"          prefWidth="50"/>
+                <TableColumn fx:id="colNom"           text="Nom"         prefWidth="120"/>
+                <TableColumn fx:id="colPrenom"        text="Prénom"      prefWidth="120"/>
+                <TableColumn fx:id="colEmail"         text="Email"       prefWidth="160"/>
+                <TableColumn fx:id="colMatricule"     text="Matricule"   prefWidth="90"/>
+                <TableColumn fx:id="colTelephone"     text="Téléphone"   prefWidth="100"/>
+                <TableColumn fx:id="colTypeApprenant" text="Type"        prefWidth="100"/>
+                <TableColumn fx:id="colEntreprise"    text="Entreprise"  prefWidth="130"/>
+            </columns>
+            <placeholder><Label text="Aucun apprenant trouvé"/></placeholder>
+        </TableView>
+
+        <!-- FORMULAIRE ADMIN/RESPONSABLE -->
+        <ScrollPane fitToWidth="true">
+            <VBox fx:id="vboxFormulaire" spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Formulaire" styleClass="form-title"/>
+
+                <Label text="Nom *"/>        <TextField fx:id="txtNom"       promptText="Nom de famille"/>
+                <Label text="Prénom *"/>     <TextField fx:id="txtPrenom"    promptText="Prénom"/>
+                <Label text="Email *"/>      <TextField fx:id="txtEmail"     promptText="email@exemple.com"/>
+                <Label text="Mot de passe"/> <TextField fx:id="txtMotDePasse" promptText="Mot de passe"/>
+                <Label text="Matricule"/>    <TextField fx:id="txtMatricule"  promptText="Ex: MAT001"/>
+                <Label text="Téléphone"/>    <TextField fx:id="txtTelephone"  promptText="+226 XX XX XX XX"/>
+                <Label text="Adresse"/>      <TextField fx:id="txtAdresse"    promptText="Adresse"/>
+
+                <Separator/>
+                <Label text="Type d'apprenant *" style="-fx-font-weight:bold; -fx-font-size:13px;"/>
+                <HBox spacing="20" alignment="CENTER_LEFT">
+                    <RadioButton fx:id="rbApprenanLibre" text="🌟 Apprenant libre"
+                                 selected="true" onAction="#handleTypeApprenantChange">
+                        <toggleGroup><ToggleGroup fx:id="tgType"/></toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="rbApprenantEntreprise" text="🏢 Vient d'une entreprise"
+                                 toggleGroup="$tgType" onAction="#handleTypeApprenantChange"/>
+                </HBox>
+
+                <VBox fx:id="vboxEntrepriseSelection" spacing="6" managed="false" visible="false">
+                    <Label text="Entreprise *" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbEntreprise" maxWidth="Infinity"
+                              promptText="— Sélectionner une entreprise —"/>
+                    <Label text="ℹ️ L'entreprise doit être préalablement enregistrée."
+                           style="-fx-font-size:11px; -fx-text-fill:#7f8c8d;" wrapText="true"/>
+                </VBox>
+                <Separator/>
+
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+
+                <HBox fx:id="hboxBoutons" spacing="8">
+                    <Button text="✚ Ajouter"    onAction="#handleAjouter"     styleClass="btn-primary"/>
+                    <Button text="✏ Modifier"    onAction="#handleModifier"    styleClass="btn-secondary"/>
+                    <Button text="🗑 Supprimer"  onAction="#handleSupprimer"   styleClass="btn-danger"/>
+                    <Button text="+ Nouveau"     onAction="#handleNouveauForm" styleClass="btn-info"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

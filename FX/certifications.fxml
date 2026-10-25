@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.CertificationController">
+    <padding><Insets top="15" bottom="15" left="15" right="15"/></padding>
+
+    <Label text="🏆 Documents &amp; Certifications" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.62" VBox.vgrow="ALWAYS">
+
+        <!-- TABLE -->
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colApprenant" text="Apprenant"   prefWidth="150"/>
+                <TableColumn fx:id="colType"      text="Type Document" prefWidth="180"/>
+                <TableColumn fx:id="colSession"   text="Session"     prefWidth="160"/>
+                <TableColumn fx:id="colDate"      text="Date"        prefWidth="100"/>
+                <TableColumn fx:id="colPdf"       text="Fichier"     prefWidth="160"/>
+            </columns>
+            <placeholder><Label text="Aucun document"/></placeholder>
+        </TableView>
+
+        <!-- FORMULAIRE -->
+        <ScrollPane fitToWidth="true">
+            <VBox fx:id="vboxFormulaire" spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Délivrer un Document" styleClass="form-title"/>
+
+                <Label text="Type de document *"/>
+                <ComboBox fx:id="cbTypeDocument" maxWidth="Infinity" promptText="Sélectionner le type..."/>
+
+                <Label text="Apprenant"/>
+                <ComboBox fx:id="cbApprenant" maxWidth="Infinity"/>
+
+                <Label text="Session"/>
+                <ComboBox fx:id="cbSession" maxWidth="Infinity"/>
+
+                <Label text="Fichier PDF (chemin ou référence)"/>
+                <TextField fx:id="txtFichierPdf" promptText="chemin/vers/fichier.pdf"/>
+
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+
+                <HBox fx:id="hboxBoutons" spacing="8">
+                    <Button text="➕ Délivrer"   onAction="#handleAjouter"   styleClass="btn-primary"/>
+                    <Button text="✏️ Modifier"   onAction="#handleModifier"  styleClass="btn-secondary"/>
+                    <Button text="🗑️ Supprimer"  onAction="#handleSupprimer" styleClass="btn-danger"/>
+                </HBox>
+
+                <Button text="🖨️ Générer le document"
+                        onAction="#handleGenererDocument"
+                        style="-fx-background-color:#8e44ad;-fx-text-fill:white;-fx-font-weight:bold;-fx-padding:7 0 7 0;"
+                        maxWidth="Infinity"/>
+
+                <Separator/>
+                <Label text="Types disponibles :" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                <VBox spacing="3" style="-fx-font-size:12; -fx-text-fill:#666;">
+                    <Label text="🏆 Certificat de formation"/>
+                    <Label text="📋 Attestation de présence"/>
+                    <Label text="📊 Relevé de notes"/>
+                    <Label text="📄 Convention de formation"/>
+                    <Label text="🗄️ Archive numérique"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

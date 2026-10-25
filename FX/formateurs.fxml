@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.FormateurController">
+    <padding><Insets top="15" bottom="15" left="15" right="15"/></padding>
+
+    <Label text="👨‍🏫 Gestion des Formateurs" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.38" VBox.vgrow="ALWAYS">
+
+        <!-- COLONNE GAUCHE : liste + formulaire -->
+        <VBox spacing="10">
+            <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId"          text="ID"        prefWidth="45"/>
+                    <TableColumn fx:id="colNom"         text="Nom"       prefWidth="100"/>
+                    <TableColumn fx:id="colPrenom"      text="Prénom"    prefWidth="100"/>
+                    <TableColumn fx:id="colSpecialite"  text="Spécialité" prefWidth="120"/>
+                    <TableColumn fx:id="colTauxHoraire" text="Taux/h"    prefWidth="80"/>
+                </columns>
+                <placeholder><Label text="Aucun formateur"/></placeholder>
+            </TableView>
+
+            <!-- Formulaire ADMIN/RESPONSABLE uniquement -->
+            <ScrollPane fitToWidth="true">
+                <VBox fx:id="vboxFormulaire" spacing="8">
+                    <padding><Insets top="8" bottom="8" left="10" right="10"/></padding>
+                    <Label text="Formulaire" styleClass="form-title"/>
+                    <Label text="Nom *"/>          <TextField fx:id="txtNom"          promptText="Nom"/>
+                    <Label text="Prénom"/>         <TextField fx:id="txtPrenom"       promptText="Prénom"/>
+                    <Label text="Email"/>          <TextField fx:id="txtEmail"        promptText="email@exemple.com"/>
+                    <Label text="Mot de passe"/>   <TextField fx:id="txtMotDePasse"   promptText="Mot de passe"/>
+                    <Label text="Spécialité"/>     <TextField fx:id="txtSpecialite"   promptText="Ex: Java, Python..."/>
+                    <Label text="Taux horaire (FCFA)"/> <TextField fx:id="txtTauxHoraire" promptText="0"/>
+                    <Label text="Disponibilités"/> <TextField fx:id="txtDisponibilite" promptText="Ex: Lundi-Vendredi"/>
+                    <Label text="CV (résumé)"/>    <TextArea  fx:id="txtCv" prefRowCount="3" promptText="Résumé CV..."/>
+                    <Label fx:id="lblStatus" text="" wrapText="true"/>
+                    <HBox fx:id="hboxBoutons" spacing="6">
+                        <Button text="➕ Ajouter"    onAction="#handleAjouter"    styleClass="btn-primary"/>
+                        <Button text="✏️ Modifier"   onAction="#handleModifier"   styleClass="btn-secondary"/>
+                        <Button text="🗑️ Supprimer"  onAction="#handleSupprimer"  styleClass="btn-danger"/>
+                        <Button text="🔄 Nouveau"    onAction="#handleNouveauForm" styleClass="btn-info"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+        <!-- COLONNE DROITE : onglets profil / historique / calcul -->
+        <TabPane fx:id="tabPaneProfil" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ONGLET PROFIL -->
+            <Tab text="👤 Profil">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="12">
+                        <padding><Insets top="15" bottom="15" left="15" right="15"/></padding>
+                        <Label text="Profil du Formateur" styleClass="form-title"/>
+                        <GridPane hgap="15" vgap="10">
+                            <Label text="Nom complet :"   GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight:bold;"/>
+                            <Label fx:id="lblProfilNom"   GridPane.columnIndex="1" GridPane.rowIndex="0" wrapText="true"/>
+                            <Label text="Email :"         GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight:bold;"/>
+                            <Label fx:id="lblProfilEmail" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label text="Spécialité :"    GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight:bold;"/>
+                            <Label fx:id="lblProfilSpecialite" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <Label text="Taux horaire :"  GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight:bold;"/>
+                            <Label fx:id="lblProfilTaux"  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                            <Label text="Disponibilités :" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight:bold;"/>
+                            <Label fx:id="lblProfilDispo" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        </GridPane>
+                        <Label text="CV / Biographie" style="-fx-font-weight:bold;"/>
+                        <TextArea fx:id="txtProfilCv" prefRowCount="5" editable="false" wrapText="true"
+                                  style="-fx-control-inner-background:#f8f8f8;"/>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- ONGLET HISTORIQUE INTERVENTIONS -->
+            <Tab text="📅 Historique Interventions">
+                <VBox spacing="8">
+                    <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+                    <Label text="Sessions animées par ce formateur" styleClass="form-title"/>
+                    <TableView fx:id="tableHistorique" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colHSession"  text="Programme / Session" prefWidth="200"/>
+                            <TableColumn fx:id="colHDateDebut" text="Début"    prefWidth="100"/>
+                            <TableColumn fx:id="colHDateFin"   text="Fin"      prefWidth="100"/>
+                            <TableColumn fx:id="colHLieu"      text="Lieu"     prefWidth="120"/>
+                            <TableColumn fx:id="colHInscrits"  text="Capacité" prefWidth="80"/>
+                        </columns>
+                        <placeholder><Label text="Sélectionnez un formateur"/></placeholder>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <!-- ONGLET CALCUL MONTANT (ADMIN + SERVICE_FINANCIER) -->
+            <Tab fx:id="tabMontant" text="💰 Montant à Verser">
+                <VBox fx:id="vboxMontantFinancier" spacing="10">
+                    <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+                    <Label text="Calcul du montant à verser par programme" styleClass="form-title"/>
+                    <Label text="(Taux horaire × Durée du programme)" style="-fx-font-style:italic; -fx-text-fill:#666;"/>
+                    <TableView fx:id="tableCalcul" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colCProgramme" text="Programme"       prefWidth="180"/>
+                            <TableColumn fx:id="colCHeures"    text="Durée (h)"       prefWidth="90"/>
+                            <TableColumn fx:id="colCTaux"      text="Taux (FCFA/h)"   prefWidth="110"/>
+                            <TableColumn fx:id="colCMontant"   text="Montant (FCFA)"  prefWidth="120"/>
+                        </columns>
+                        <placeholder><Label text="Sélectionnez un formateur"/></placeholder>
+                    </TableView>
+                    <Label fx:id="lblTotalAVerser" text="" style="-fx-font-size:14; -fx-font-weight:bold; -fx-text-fill:#2e7d32;"/>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </SplitPane>
+</VBox>

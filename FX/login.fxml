@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="login-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.LoginController">
+
+    <padding><Insets top="40" bottom="40" left="60" right="60"/></padding>
+
+    <VBox alignment="CENTER" spacing="6">
+        <Label text=" AGENCE DE FORMATION" styleClass="login-title"/>
+    </VBox>
+
+    <VBox spacing="10" maxWidth="340">
+        <Label text="Adresse Email"/>
+        <TextField fx:id="emailField" promptText="exemple@formation.com" styleClass="input-field"/>
+
+        <Label text="Mot de passe"/>
+        <PasswordField fx:id="passwordField" promptText="" styleClass="input-field"/>
+
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false"/>
+
+        <Button fx:id="loginButton" text="SE CONNECTER" onAction="#handleLogin"
+                styleClass="btn-primary" maxWidth="Infinity"/>
+    </VBox>
+</VBox>

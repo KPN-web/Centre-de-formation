@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.StatistiqueController">
+    <padding><Insets top="15" bottom="15" left="20" right="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="📊 Statistiques &amp; Reporting" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="cbAnnee" promptText="Toutes les années" prefWidth="150"/>
+        <Button text="🔄 Actualiser" onAction="#handleActualiser" styleClass="btn-primary"/>
+    </HBox>
+
+    <!-- KPI Cards -->
+    <GridPane hgap="15" vgap="15">
+        <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label text="🎓 Apprenants"   styleClass="stat-label"/>
+            <Label fx:id="lblApprenants"   text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Label text="👨‍🏫 Formateurs" styleClass="stat-label"/>
+            <Label fx:id="lblFormateurs"   text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <Label text="📚 Programmes"   styleClass="stat-label"/>
+            <Label fx:id="lblProgrammes"   text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label text="📅 Sessions"     styleClass="stat-label"/>
+            <Label fx:id="lblSessions"     text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label text="📝 Inscriptions" styleClass="stat-label"/>
+            <Label fx:id="lblInscriptions" text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label text="🏆 Documents"    styleClass="stat-label"/>
+            <Label fx:id="lblCertifications" text="" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Label text="😊 Taux de Satisfaction"    styleClass="stat-label"/>
+            <Label fx:id="lblTauxSatisfaction" text="–" styleClass="stat-value"/>
+        </VBox>
+    </GridPane>
+
+    <!-- Carte CA (ADMIN / FINANCIER) -->
+    <VBox fx:id="cardCA" styleClass="stat-card-wide" spacing="5">
+        <Label text="💰 Chiffre d'Affaires Total" styleClass="stat-label"/>
+        <Label fx:id="lblChiffreAffaires" text="" styleClass="stat-value-big"/>
+    </VBox>
+
+    <!-- Onglets statistiques -->
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- Rentabilité par session -->
+        <Tab text="📈 Rentabilité par Session">
+            <TableView fx:id="tableRentabilite" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colRSession"   text="Session"         prefWidth="170"/>
+                    <TableColumn fx:id="colRProgramme" text="Programme"       prefWidth="150"/>
+                    <TableColumn fx:id="colRInscrits"  text="Inscrits"        prefWidth="70"/>
+                    <TableColumn fx:id="colRRevenu"    text="Revenu (FCFA)"   prefWidth="120"/>
+                    <TableColumn fx:id="colRCout"      text="Coût Form.(FCFA)" prefWidth="130"/>
+                    <TableColumn fx:id="colRMarge"     text="Marge (FCFA)"    prefWidth="120"/>
+                </columns>
+                <placeholder><Label text="Aucune donnée"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- Taux de satisfaction par session -->
+        <Tab text="😊 Satisfaction &amp; Taux">
+            <TableView fx:id="tableSatisfaction" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colSSession"      text="Session"       prefWidth="200"/>
+                    <TableColumn fx:id="colSTauxPresence" text="Présence %"    prefWidth="100"/>
+                    <TableColumn fx:id="colSTauxReussite" text="Réussite %"    prefWidth="100"/>
+                    <TableColumn fx:id="colSTauxAbandon"  text="Abandon %"     prefWidth="100"/>
+                    <TableColumn fx:id="colSNoteMoyenne"  text="Note moy./20"  prefWidth="100"/>
+                    <TableColumn fx:id="colSTauxVote"    text="Satisfaction %" prefWidth="110"/>
+                </columns>
+                <placeholder><Label text="Aucune donnée"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- Inscriptions par programme -->
+        <Tab text="📊 Inscriptions par Programme">
+            <TableView fx:id="tableTop" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colProgramme"  text="Programme"       prefWidth="260"/>
+                    <TableColumn fx:id="colNbInscrits" text="Nb Inscrits"     prefWidth="110"/>
+                    <TableColumn fx:id="colRevenu"     text="Revenu (FCFA)"   prefWidth="130"/>
+                </columns>
+                <placeholder><Label text="Aucune donnée"/></placeholder>
+            </TableView>
+        </Tab>
+
+        <!-- Performance formateurs (RESPONSABLE / ADMIN) -->
+        <Tab text="👨‍🏫 Performance Formateurs">
+            <TableView fx:id="tableFormateurs" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colFNom"         text="Formateur"      prefWidth="180"/>
+                    <TableColumn fx:id="colFSessions"    text="Sessions"       prefWidth="80"/>
+                    <TableColumn fx:id="colFNotemoyenne"  text="Note moy./20"  prefWidth="110"/>
+                    <TableColumn fx:id="colFTauxPresence" text="Présence %"    prefWidth="100"/>
+                    <TableColumn fx:id="colFTauxReussite" text="Réussite %"    prefWidth="100"/>
+                </columns>
+                <placeholder><Label text="Aucune donnée"/></placeholder>
+            </TableView>
+        </Tab>
+
+    </TabPane>
+</VBox>

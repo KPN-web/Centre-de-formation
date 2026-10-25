@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.ProgrammeController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <Label text="&#128218; Gestion des Programmes" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.6" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"       text="ID"        prefWidth="50"/>
+                <TableColumn fx:id="colIntitule" text="Intitulé"  prefWidth="200"/>
+                <TableColumn fx:id="colModalite" text="Modalité"  prefWidth="110"/>
+                <TableColumn fx:id="colDuree"    text="Durée(h)"  prefWidth="80"/>
+                <TableColumn fx:id="colTarif"    text="Tarif"     prefWidth="100"/>
+                <TableColumn fx:id="colPublie"   text="Publié"    prefWidth="70"/>
+            </columns>
+            <placeholder><Label text="Aucun programme"/></placeholder>
+        </TableView>
+
+        <ScrollPane fitToWidth="true">
+            <VBox fx:id="vboxFormulaire" spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Formulaire" styleClass="form-title"/>
+                <Label text="Intitulé *"/><TextField fx:id="txtIntitule" promptText="Nom du programme"/>
+                <Label text="Objectifs"/><TextArea fx:id="txtObjectifs" prefRowCount="3" promptText="Objectifs pédagogiques..."/>
+                <Label text="Prérequis"/><TextArea fx:id="txtPrerequis" prefRowCount="2" promptText="Prérequis..."/>
+                <Label text="Durée (heures)"/><TextField fx:id="txtDuree" promptText="0"/>
+                <Label text="Modalité"/>
+                <ComboBox fx:id="cbModalite" maxWidth="Infinity"/>
+                <Label text="Tarif (FCFA)"/><TextField fx:id="txtTarif" promptText="0"/>
+                <CheckBox fx:id="chkPublie" text="Publié / Visible"/>
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+                <HBox fx:id="hboxBoutons" spacing="8">
+                    <Button text="&#10010; Ajouter"   onAction="#handleAjouter"    styleClass="btn-primary"/>
+                    <Button text="&#9998; Modifier"   onAction="#handleModifier"   styleClass="btn-secondary"/>
+                    <Button text="&#128465; Supprimer" onAction="#handleSupprimer"  styleClass="btn-danger"/>
+                    <Button text="&#43; Nouveau"      onAction="#handleNouveauForm" styleClass="btn-info"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

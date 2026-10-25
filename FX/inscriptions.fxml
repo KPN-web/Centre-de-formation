@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.InscriptionController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <Label text="📋 Inscriptions" styleClass="page-title"/>
+
+    <!-- Bande visible pour l'APPRENANT : résumé financier -->
+    <VBox fx:id="vboxInfoApprenant" spacing="5" styleClass="info-card">
+        <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+        <Label text="💰 Résumé de vos paiements" styleClass="form-title"/>
+        <HBox spacing="30" alignment="CENTER_LEFT">
+            <VBox alignment="CENTER">
+                <Label text="Total dû" style="-fx-font-size:11px; -fx-text-fill:#7f8c8d;"/>
+                <Label fx:id="lblTotalDu" text="–" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label text="Déjà payé" style="-fx-font-size:11px; -fx-text-fill:#7f8c8d;"/>
+                <Label fx:id="lblMontantPaye" text="–" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#27ae60;"/>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label text="Reste à payer" style="-fx-font-size:11px; -fx-text-fill:#7f8c8d;"/>
+                <Label fx:id="lblResteAPayer" text="–" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Panel ENTREPRISE : inscrire un membre (statut EN_ATTENTE automatique) -->
+    <VBox fx:id="vboxEntrepriseInscription" spacing="10" styleClass="info-card"
+          style="-fx-border-color:#e67e22; -fx-border-width:1; -fx-border-radius:5;">
+        <padding><Insets top="12" bottom="12" left="15" right="15"/></padding>
+        <Label text="🏢 Inscrire un membre de votre entreprise" styleClass="form-title"
+               style="-fx-text-fill:#e67e22;"/>
+        <Label text="La demande sera soumise au responsable pour validation avant d'être effective."
+               style="-fx-text-fill:#7f8c8d; -fx-font-style:italic;" wrapText="true"/>
+        <HBox spacing="15" alignment="BOTTOM_LEFT">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Membre (apprenant) *"/>
+                <ComboBox fx:id="cbEntrepriseApprenant" maxWidth="Infinity" promptText="Sélectionner un membre…"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Session *"/>
+                <ComboBox fx:id="cbEntrepriseSession" maxWidth="Infinity" promptText="Sélectionner une session…"/>
+            </VBox>
+            <Button text="📤 Soumettre la demande"
+                    onAction="#handleEntrepriseInscrire"
+                    style="-fx-background-color:#e67e22; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:8 16 8 16; -fx-background-radius:5;"/>
+        </HBox>
+        <Label fx:id="lblEntrepriseStatus" text="" wrapText="true"/>
+    </VBox>
+
+    <!-- Panel RESPONSABLE/ADMIN : demandes EN_ATTENTE à traiter -->
+    <VBox fx:id="vboxDemandesAttente" spacing="8" styleClass="info-card"
+          style="-fx-border-color:#f39c12; -fx-border-width:1; -fx-border-radius:5;">
+        <padding><Insets top="12" bottom="12" left="15" right="15"/></padding>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="⏳ Demandes en attente de validation" styleClass="form-title"
+                   style="-fx-text-fill:#f39c12;"/>
+            <Label fx:id="lblNbAttente" text="(0)"
+                   style="-fx-text-fill:#e74c3c; -fx-font-weight:bold; -fx-font-size:14px;"/>
+        </HBox>
+        <TableView fx:id="tableAttente" prefHeight="160">
+            <columns>
+                <TableColumn fx:id="colAttDate"      text="Date"         prefWidth="100"/>
+                <TableColumn fx:id="colAttApprenant" text="Apprenant"    prefWidth="150"/>
+                <TableColumn fx:id="colAttEntreprise" text="Entreprise"  prefWidth="130"/>
+                <TableColumn fx:id="colAttSession"   text="Session"      prefWidth="180"/>
+                <TableColumn fx:id="colAttPrix"      text="💰 Prix (FCFA)" prefWidth="120"/>
+                <TableColumn fx:id="colAttStatut"    text="Statut"       prefWidth="100"/>
+            </columns>
+            <placeholder><Label text="Aucune demande en attente"/></placeholder>
+        </TableView>
+        <HBox spacing="10">
+            <Button text="✅ Valider la demande"  onAction="#handleValiderAttente"  style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:6 14 6 14; -fx-background-radius:5;"/>
+            <Button text="❌ Refuser la demande"  onAction="#handleRefuserAttente"  style="-fx-background-color:#e74c3c; -fx-text-fill:white; -fx-font-weight:bold; -fx-padding:6 14 6 14; -fx-background-radius:5;"/>
+        </HBox>
+        <Label fx:id="lblAttenteStatus" text="" wrapText="true"/>
+    </VBox>
+
+    <!-- Panel satisfaction : visible pour l'APPRENANT sur inscription sélectionnée -->
+    <VBox fx:id="vboxSatisfaction" spacing="10" styleClass="info-card">
+        <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+        <Label text="😊 Votre Satisfaction" styleClass="form-title"/>
+        <Label text="Êtes-vous satisfait(e) de votre formation pour cette inscription ?" wrapText="true"/>
+        <Label fx:id="lblVoteActuel" text="" style="-fx-font-style:italic;"/>
+        <HBox spacing="10">
+            <Button text="✅ Oui, je suis satisfait(e)" onAction="#handleVoterSatisfait"  styleClass="btn-success"/>
+            <Button text="❌ Non, pas satisfait(e)"     onAction="#handleVoterNonSatisfait" styleClass="btn-danger"/>
+        </HBox>
+    </VBox>
+
+    <SplitPane dividerPositions="0.65" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"         text="ID"                  prefWidth="50"/>
+                <TableColumn fx:id="colDate"       text="Date"                prefWidth="100"/>
+                <TableColumn fx:id="colStatut"     text="Statut"              prefWidth="110"/>
+                <TableColumn fx:id="colValidation" text="Validé"              prefWidth="70"/>
+                <TableColumn fx:id="colApprenant"  text="Apprenant"           prefWidth="150"/>
+                <TableColumn fx:id="colSession"    text="Session"             prefWidth="180"/>
+                <TableColumn fx:id="colPrixFormation" text="💰 Prix (FCFA)"  prefWidth="120"/>
+                <TableColumn fx:id="colResultat"   text="Résultat"            prefWidth="90"/>
+            </columns>
+            <placeholder><Label text="Aucune inscription"/></placeholder>
+        </TableView>
+
+        <!-- Formulaire visible seulement pour RESPONSABLE/ADMIN -->
+        <ScrollPane fitToWidth="true">
+            <VBox fx:id="vboxFormulaire" spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Nouvelle Inscription" styleClass="form-title"/>
+                <Label text="Apprenant *"/><ComboBox fx:id="cbApprenant" maxWidth="Infinity"/>
+                <Label text="Session *"/><ComboBox fx:id="cbSession" maxWidth="Infinity"/>
+                <Label text="Statut"/><ComboBox fx:id="cbStatut" maxWidth="Infinity"/>
+                <CheckBox fx:id="chkValidation" text="Validation administrative"/>
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+                <HBox fx:id="hboxBoutons" spacing="8">
+                    <Button text="➕ Inscrire"    onAction="#handleAjouter"   styleClass="btn-primary"/>
+                    <Button text="✅ Valider"      onAction="#handleValider"   styleClass="btn-success"/>
+                    <Button text="❌ Refuser"      onAction="#handleRefuser"   styleClass="btn-warning"/>
+                    <Button text="🗑️ Supprimer"  onAction="#handleSupprimer" styleClass="btn-danger"/>
+                    <Button text="✅ Admis"        onAction="#handleAdmettre"  styleClass="btn-success"/>
+                    <Button text="⏳ Ajourné"      onAction="#handleAjourner"  styleClass="btn-warning"/>
+                </HBox>
+                <Button text="🖨️ Générer l'attestation / certificat"
+                        onAction="#handleGenererAttestation"
+                        style="-fx-background-color:#8e44ad;-fx-text-fill:white;-fx-font-weight:bold;-fx-padding:7 0 7 0;"
+                        maxWidth="Infinity"/>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

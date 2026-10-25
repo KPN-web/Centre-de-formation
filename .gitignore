@@ -1,0 +1,13 @@
+target/
+build/
+out/
+bin/
+*.class
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+nbproject/private/
+.env

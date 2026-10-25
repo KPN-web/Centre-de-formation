@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.SessionController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <Label text="🗓️ Sessions" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.62" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colLibelle"   text="Session (Programme – Lieu – Date)" prefWidth="320"/>
+                <TableColumn fx:id="colDateDebut" text="Début"    prefWidth="100"/>
+                <TableColumn fx:id="colDateFin"   text="Fin"      prefWidth="100"/>
+                <TableColumn fx:id="colLieu"      text="Lieu"     prefWidth="120"/>
+                <TableColumn fx:id="colCapacite"  text="Capacité" prefWidth="80"/>
+                <TableColumn fx:id="colStatut"    text="Statut"   prefWidth="100"/>
+                <TableColumn fx:id="colValide"    text="Validé"   prefWidth="100"/>
+            </columns>
+            <placeholder><Label text="Aucune session"/></placeholder>
+        </TableView>
+
+        <!-- Formulaire visible pour RESPONSABLE/ADMIN uniquement -->
+        <ScrollPane fitToWidth="true">
+            <VBox fx:id="vboxFormulaire" spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Formulaire Session" styleClass="form-title"/>
+                <Label text="Date début *"/><DatePicker fx:id="dpDateDebut"/>
+                <Label text="Date fin"/><DatePicker fx:id="dpDateFin"/>
+                <Label text="Lieu *"/><TextField fx:id="txtLieu" promptText="Salle, ville..."/>
+                <Label text="Capacité max"/><TextField fx:id="txtCapacite" promptText="20"/>
+                <Label text="Statut"/><ComboBox fx:id="cbStatut" maxWidth="Infinity"/>
+                <Label text="Programme"/><ComboBox fx:id="cbProgramme" maxWidth="Infinity"/>
+                <Label text="Formateur"/><ComboBox fx:id="cbFormateur" maxWidth="Infinity"/>
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+                <HBox fx:id="hboxBoutons" spacing="8">
+                    <Button text="➕ Créer"     onAction="#handleAjouter"    styleClass="btn-primary"/>
+                    <Button text="✏️ Modifier"  onAction="#handleModifier"   styleClass="btn-secondary"/>
+                    <Button text="🗑️ Supprimer" onAction="#handleSupprimer"  styleClass="btn-danger"/>
+                    <Button text="🔄 Nouveau"   onAction="#handleNouveauForm" styleClass="btn-info"/>
+                    <Button text="🛑 Terminer"  onAction="#handleTerminer"   styleClass="btn-warning"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

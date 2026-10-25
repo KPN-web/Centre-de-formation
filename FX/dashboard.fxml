@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controller.DashboardController"
+            styleClass="main-root">
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="15">
+            <padding><Insets top="12" bottom="12" left="20" right="20"/></padding>
+            <Label text="🎓" style="-fx-font-size:22;"/>
+            <VBox>
+                <Label fx:id="welcomeLabel" text="Bienvenue" styleClass="topbar-title"/>
+                <Label fx:id="roleLabel"    text=""          styleClass="topbar-role"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🔓 Déconnexion" onAction="#handleLogout" styleClass="btn-logout"/>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox styleClass="sidebar" spacing="4" minWidth="220">
+            <padding><Insets top="20" bottom="20" left="10" right="10"/></padding>
+            <Label text="NAVIGATION" styleClass="sidebar-section"/>
+            <Button fx:id="btnStatistiques"   text="📊 Tableau de bord"   onAction="#showStatistiques"     maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Separator/>
+            <Label text="GESTION" styleClass="sidebar-section"/>
+            <Button fx:id="btnApprenants"     text="🎓 Apprenants"        onAction="#showApprenants"       maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnFormateurs"     text="👨‍🏫 Formateurs"       onAction="#showFormateurs"       maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnProgrammes"     text="📚 Programmes"        onAction="#showProgrammes"       maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnSessions"       text="📅 Sessions"          onAction="#showSessions"         maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnInscriptions"   text="📝 Inscriptions"      onAction="#showInscriptions"     maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnPaiements"      text="💰 Paiements"         onAction="#showPaiements"        maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnSuivi"          text="📊 Suivi Pédagogique" onAction="#showSuiviPedagogique" maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnCertifications" text="🏆 Documents"         onAction="#showCertifications"   maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Separator/>
+            <Label text="ADMINISTRATION" styleClass="sidebar-section"/>
+            <Button fx:id="btnEntreprises"    text="🏭 Entreprises"       onAction="#showEntreprises"      maxWidth="Infinity" styleClass="sidebar-btn"/>
+            <Button fx:id="btnUtilisateurs"   text="👥 Utilisateurs"      onAction="#showUtilisateurs"     maxWidth="Infinity" styleClass="sidebar-btn"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <VBox alignment="CENTER" spacing="30">
+                <padding><Insets top="40" bottom="40" left="40" right="40"/></padding>
+                <Label text="📊 Tableau de Bord" styleClass="page-title"/>
+                <GridPane hgap="20" vgap="20" alignment="CENTER">
+                    <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="🎓 Apprenants"  styleClass="stat-label"/>
+                        <Label fx:id="lblNbApprenants" text="" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="👨‍🏫 Formateurs" styleClass="stat-label"/>
+                        <Label fx:id="lblNbFormateurs" text="" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="📅 Sessions"    styleClass="stat-label"/>
+                        <Label fx:id="lblNbSessions"   text="" styleClass="stat-value"/>
+                    </VBox>
+                    <!-- Carte CA : visible seulement ADMIN / FINANCIER / SERVICE_FINANCIER -->
+                    <VBox fx:id="cardChiffreAffaires" styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="💰 Chiffre d'Affaires" styleClass="stat-label"/>
+                        <Label fx:id="lblChiffreAffaires"   text="" styleClass="stat-value-small"/>
+                    </VBox>
+                </GridPane>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

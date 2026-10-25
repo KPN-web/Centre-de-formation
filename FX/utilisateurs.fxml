@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.UtilisateurController">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <Label text=" Gestion des Utilisateurs" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.62" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"     text="ID"     prefWidth="50"/>
+                <TableColumn fx:id="colNom"    text="Nom"    prefWidth="120"/>
+                <TableColumn fx:id="colPrenom" text="Prnom" prefWidth="120"/>
+                <TableColumn fx:id="colEmail"  text="Email"  prefWidth="180"/>
+                <TableColumn fx:id="colRole"   text="Rle"   prefWidth="110"/>
+                <TableColumn fx:id="colActif"  text="Actif"  prefWidth="60"/>
+            </columns>
+            <placeholder><Label text="Aucun utilisateur"/></placeholder>
+        </TableView>
+
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="10">
+                <padding><Insets top="10" bottom="10" left="15" right="15"/></padding>
+                <Label text="Formulaire" styleClass="form-title"/>
+                <Label text="Nom *"/><TextField fx:id="txtNom" promptText="Nom"/>
+                <Label text="Prnom"/><TextField fx:id="txtPrenom" promptText="Prnom"/>
+                <Label text="Email *"/><TextField fx:id="txtEmail" promptText="email@exemple.com"/>
+                <Label text="Mot de passe"/><TextField fx:id="txtMotDePasse" promptText="Mot de passe"/>
+                <Label text="Rle"/><ComboBox fx:id="cbRole" maxWidth="Infinity"/>
+                <CheckBox fx:id="chkActif" text="Compte actif" selected="true"/>
+                <Label fx:id="lblStatus" text="" wrapText="true"/>
+                <HBox spacing="8">
+                    <Button text=" Ajouter"   onAction="#handleAjouter"    styleClass="btn-primary"/>
+                    <Button text=" Modifier"  onAction="#handleModifier"   styleClass="btn-secondary"/>
+                    <Button text=" Supprimer" onAction="#handleSupprimer"  styleClass="btn-danger"/>
+                    <Button text=" Nouveau"   onAction="#handleNouveauForm" styleClass="btn-info"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>

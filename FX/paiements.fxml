@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.PaiementController">
+
+    <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+    <Label text="💳 Gestion des Paiements" styleClass="page-title"/>
+
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- ═══════════════════════════════════════════════════════════
+             ONGLET APPRENANTS
+             ═══════════════════════════════════════════════════════════ -->
+        <Tab fx:id="tabApprenants" text="🎓 Paiements Apprenants" closable="false">
+            <HBox spacing="12" VBox.vgrow="ALWAYS">
+
+                <!-- Tableau des paiements -->
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <TableView fx:id="tableApprenants" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colAApprenant" text="Apprenant"   prefWidth="160"/>
+                            <TableColumn fx:id="colAMontant"   text="Montant"      prefWidth="100"/>
+                            <TableColumn fx:id="colADate"      text="Date"         prefWidth="110"/>
+                            <TableColumn fx:id="colAMode"      text="Mode"         prefWidth="110"/>
+                            <TableColumn fx:id="colAStatut"    text="Statut"       prefWidth="110"/>
+                        </columns>
+                    </TableView>
+                    <Label fx:id="lblTotalA" text="Total encaissé : –"
+                           style="-fx-font-weight:bold;-fx-font-size:13;"/>
+                </VBox>
+
+                <!-- Formulaire de paiement apprenant -->
+                <VBox fx:id="vboxFormA" spacing="10" prefWidth="300"
+                      style="-fx-background-color:#f8f9fa;-fx-border-color:#dee2e6;-fx-border-radius:6;-fx-background-radius:6;-fx-padding:14;">
+
+                    <Label text="📋 Formulaire de paiement"
+                           style="-fx-font-size:14;-fx-font-weight:bold;-fx-text-fill:#333;"/>
+
+                    <!-- Sélection apprenant -->
+                    <Label text="Apprenant *" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbApprenant" promptText="— Sélectionner un apprenant —"
+                              maxWidth="Infinity"/>
+
+                    <!-- Badge indicateur type de paieur (affiché dynamiquement) -->
+                    <Label fx:id="lblInfoPaieur" text=""
+                           style="-fx-font-weight:bold;-fx-font-size:13;" wrapText="true"/>
+
+                    <!-- Section entreprise (visible seulement si apprenant lié à entreprise) -->
+                    <VBox fx:id="vboxEntreprisePaiement" spacing="6" visible="false" managed="false"
+                          style="-fx-background-color:#e3f2fd;-fx-border-color:#1565c0;-fx-border-width:1;
+                                 -fx-border-radius:5;-fx-background-radius:5;-fx-padding:10;">
+                        <Label text="🏢 Entreprise payeur *"
+                               style="-fx-font-weight:bold;-fx-text-fill:#1565c0;"/>
+                        <ComboBox fx:id="cbEntreprisePaiement"
+                                  promptText="— Entreprise —"
+                                  maxWidth="Infinity"/>
+                        <Label text="La formation sera facturée au nom de cette entreprise."
+                               wrapText="true"
+                               style="-fx-font-size:11;-fx-text-fill:#555;"/>
+                    </VBox>
+
+                    <!-- Inscription (session) -->
+                    <Label text="Inscription / Session" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbInscription" promptText="— Session concernée —"
+                              maxWidth="Infinity"/>
+
+                    <!-- Montant -->
+                    <Label text="Montant (FCFA) *" style="-fx-font-weight:bold;"/>
+                    <TextField fx:id="txtMontantA" promptText="Ex : 150000"/>
+
+                    <!-- Mode de paiement -->
+                    <Label text="Mode de paiement" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbModeA" promptText="— Mode —" maxWidth="Infinity"/>
+
+                    <!-- Statut -->
+                    <Label text="Statut" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbStatutA" promptText="— Statut —" maxWidth="Infinity"/>
+
+                    <!-- Message status -->
+                    <Label fx:id="lblStatusA" text="" wrapText="true"/>
+
+                    <!-- Boutons d'action -->
+                    <HBox fx:id="hboxBoutonsA" spacing="8">
+                        <Button text="➕ Ajouter"    onAction="#handleAjouterA"
+                                style="-fx-background-color:#27ae60;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="✏️ Modifier"   onAction="#handleModifierA"
+                                style="-fx-background-color:#2980b9;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerA"
+                                style="-fx-background-color:#e74c3c;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="🔄 Nouveau"   onAction="#handleNouveauA"
+                                style="-fx-background-color:#7f8c8d;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+                    <Button text="🖨️ Générer le reçu de paiement"
+                            onAction="#handleGenererRecuApprenant"
+                            style="-fx-background-color:#8e44ad;-fx-text-fill:white;-fx-font-weight:bold;-fx-padding:8 0 8 0;"
+                            maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+        </Tab>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             ONGLET FORMATEURS
+             ═══════════════════════════════════════════════════════════ -->
+        <Tab fx:id="tabFormateurs" text="👨‍🏫 Salaires Formateurs" closable="false">
+            <HBox spacing="12" VBox.vgrow="ALWAYS">
+
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <TableView fx:id="tableFormateurs" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colFFormateur" text="Formateur"   prefWidth="160"/>
+                            <TableColumn fx:id="colFMontant"   text="Montant"      prefWidth="100"/>
+                            <TableColumn fx:id="colFDate"      text="Date"         prefWidth="110"/>
+                            <TableColumn fx:id="colFMode"      text="Mode"         prefWidth="100"/>
+                            <TableColumn fx:id="colFStatut"    text="Statut"       prefWidth="100"/>
+                            <TableColumn fx:id="colFDesc"      text="Motif"        prefWidth="120"/>
+                        </columns>
+                    </TableView>
+                    <Label fx:id="lblTotalF" text="Total salaires versés : –"
+                           style="-fx-font-weight:bold;-fx-font-size:13;"/>
+                </VBox>
+
+                <VBox fx:id="vboxFormF" spacing="10" prefWidth="280"
+                      style="-fx-background-color:#f8f9fa;-fx-border-color:#dee2e6;-fx-border-radius:6;-fx-background-radius:6;-fx-padding:14;">
+
+                    <Label text="📋 Paiement formateur"
+                           style="-fx-font-size:14;-fx-font-weight:bold;-fx-text-fill:#333;"/>
+
+                    <Label text="Formateur *" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbFormateur" promptText="— Sélectionner —" maxWidth="Infinity"/>
+
+                    <Label fx:id="lblStatutFormateur" text="" wrapText="true"/>
+                    <Label fx:id="lblTotalDuFormateur" text="" style="-fx-font-style:italic;"/>
+
+                    <Label text="Montant (FCFA) *" style="-fx-font-weight:bold;"/>
+                    <TextField fx:id="txtMontantF" promptText="Ex : 250000"/>
+
+                    <Label text="Mode de paiement" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbModeF" promptText="— Mode —" maxWidth="Infinity"/>
+
+                    <Label text="Statut" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbStatutF" promptText="— Statut —" maxWidth="Infinity"/>
+
+                    <Label text="Motif" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="cbMotif" promptText="— Motif —" maxWidth="Infinity"/>
+
+                    <Label fx:id="lblStatusF" text="" wrapText="true"/>
+
+                    <HBox fx:id="hboxBoutonsF" spacing="8">
+                        <Button text="➕ Ajouter"    onAction="#handleAjouterF"
+                                style="-fx-background-color:#27ae60;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="✏️ Modifier"   onAction="#handleModifierF"
+                                style="-fx-background-color:#2980b9;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerF"
+                                style="-fx-background-color:#e74c3c;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="🔄 Nouveau"   onAction="#handleNouveauF"
+                                style="-fx-background-color:#7f8c8d;-fx-text-fill:white;-fx-font-weight:bold;"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </Tab>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             ONGLET ENTREPRISES (Finance)
+             ═══════════════════════════════════════════════════════════ -->
+        <Tab fx:id="tabEntreprises" text="🏢 Finance Entreprises" closable="false">
+            <VBox spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Filtrer par entreprise :"/>
+                    <ComboBox fx:id="cbFiltreEntrepriseF" promptText="— Toutes —" prefWidth="220"/>
+                    <Label fx:id="lblTotalEntreprise" text="Total : –"
+                           style="-fx-font-weight:bold;-fx-font-size:13;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="🖨️ Générer la facture entreprise"
+                            onAction="#handleGenererFactureEntreprise"
+                            style="-fx-background-color:#8e44ad;-fx-text-fill:white;-fx-font-weight:bold;-fx-padding:7 14 7 14;-fx-background-radius:5;"/>
+                </HBox>
+                <TableView fx:id="tableEntrepriseFinance" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colEFEntreprise" text="Entreprise"   prefWidth="160"/>
+                        <TableColumn fx:id="colEFNom"        text="Nom"          prefWidth="110"/>
+                        <TableColumn fx:id="colEFPrenom"     text="Prénom"       prefWidth="110"/>
+                        <TableColumn fx:id="colEFFormation"  text="Formation"    prefWidth="180"/>
+                        <TableColumn fx:id="colEFPrix"       text="Prix"         prefWidth="100"/>
+                        <TableColumn fx:id="colEFPaye"       text="Payé"         prefWidth="100"/>
+                        <TableColumn fx:id="colEFReste"      text="Reste"        prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>

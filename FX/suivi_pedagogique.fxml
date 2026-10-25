@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" styleClass="module-root"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controller.SuiviPedagogiqueController">
+    <padding><Insets top="15" bottom="15" left="15" right="15"/></padding>
+
+    <Label text="📊 Suivi Pédagogique" styleClass="page-title"/>
+
+    <!-- Filtre par session + taux (RESPONSABLE uniquement) -->
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Filtrer par session :"/>
+        <ComboBox fx:id="cbFiltreSession" prefWidth="300" promptText="Toutes les sessions"/>
+        <Button text="🔍 Filtrer" onAction="#handleFiltrerParSession" styleClass="btn-info"/>
+    </HBox>
+
+    <!-- Stats taux - visibles RESPONSABLE/ADMIN uniquement -->
+    <VBox fx:id="vboxTaux">
+        <HBox spacing="25" alignment="CENTER_LEFT"
+              style="-fx-background-color:#f0f4ff; -fx-padding:10; -fx-background-radius:6;">
+            <Label fx:id="lblTauxPresence" text="Présence : –" style="-fx-font-weight:bold; -fx-text-fill:#1565c0;"/>
+            <Label fx:id="lblTauxReussite" text="Réussite : –" style="-fx-font-weight:bold; -fx-text-fill:#2e7d32;"/>
+            <Label fx:id="lblTauxAbandon"  text="Abandon : –"  style="-fx-font-weight:bold; -fx-text-fill:#c62828;"/>
+        </HBox>
+    </VBox>
+
+    <SplitPane dividerPositions="0.62" VBox.vgrow="ALWAYS">
+
+        <!-- TABLE -->
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colApprenant" text="Apprenant" prefWidth="140"/>
+                <TableColumn fx:id="colSession"   text="Session"   prefWidth="180"/>
+                <TableColumn fx:id="colPresence"  text="Présence"  prefWidth="75"/>
+                <TableColumn fx:id="colNote"      text="Note/20"   prefWidth="75"/>
+                <TableColumn fx:id="colStatut"    text="Statut"    prefWidth="90"/>
+                <TableColumn fx:id="colFeedback"  text="Feedback"  prefWidth="180"/>
+            </columns>
+            <placeholder><Label text="Aucun suivi pédagogique"/></placeholder>
+        </TableView>
+
+        <!-- PANNEAU DROITE -->
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="12">
+                <padding><Insets top="10" bottom="10" left="12" right="12"/></padding>
+
+                <!-- Formulaire saisie (FORMATEUR + ADMIN + RESPONSABLE) -->
+                <VBox fx:id="vboxFormulaire" spacing="8">
+                    <Label text="Saisir / Modifier un Suivi" styleClass="form-title"/>
+                    <Label text="Apprenant"/><ComboBox fx:id="cbApprenant" maxWidth="Infinity"/>
+                    <Label text="Session"/>  <ComboBox fx:id="cbSession"   maxWidth="Infinity"/>
+                    <CheckBox fx:id="chkPresence" text="Présent(e)"/>
+                    <Label text="Note (/20)"/><TextField fx:id="txtNote" promptText="0.0"/>
+                    <Label text="Feedback"/> <TextArea  fx:id="txtFeedback" prefRowCount="3" promptText="Commentaire..."/>
+                    <Label fx:id="lblStatus" text="" wrapText="true"/>
+                    <HBox fx:id="hboxBoutons" spacing="6">
+                        <Button text="➕ Enregistrer" onAction="#handleAjouter"    styleClass="btn-primary"/>
+                        <Button text="✏️ Modifier"    onAction="#handleModifier"   styleClass="btn-secondary"/>
+                        <Button text="🗑️ Supprimer"   onAction="#handleSupprimer"  styleClass="btn-danger"/>
+                        <Button text="🔄 Nouveau"     onAction="#handleNouveauForm" styleClass="btn-info"/>
+                    </HBox>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Boutons statut RESPONSABLE/ADMIN uniquement -->
+                <VBox fx:id="" spacing="6">
+                    <Label text="Définir le statut de l'apprenant sélectionné"
+                           style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                    <HBox fx:id="hboxStatutBoutons" spacing="8">
+                        <Button fx:id="btnReussi"  text="✅ Réussi"   onAction="#handleReussi"
+                                style="-fx-background-color:#2e7d32; -fx-text-fill:white; -fx-background-radius:4;"/>
+                        <Button fx:id="btnAbandon" text="❌ Abandon"  onAction="#handleAbandon"
+                                style="-fx-background-color:#c62828; -fx-text-fill:white; -fx-background-radius:4;"/>
+                        <Button fx:id="btnEnCours" text="⏳ En cours" onAction="#handleEnCours"
+                                style="-fx-background-color:#f57f17; -fx-text-fill:white; -fx-background-radius:4;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </SplitPane>
+</VBox>
